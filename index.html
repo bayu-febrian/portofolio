@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bayu Febrian — Digital Marketing Strategist</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Playfair Display (display) + Inter (body) + Space Mono (data/accent) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind Config Extension -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'forest-deep':   '#0D2818', /* near-black forest */
+            'forest-dark':   '#1A3D2B', /* dark emerald */
+            'forest-mid':    '#2D6A4F', /* emerald */
+            'forest-light':  '#40916C', /* medium emerald */
+            'forest-mist':   '#D8F3DC', /* pale mint/fog */
+            'earth-dark':    '#3D2B1F', /* dark brown */
+            'earth-mid':     '#6B4226', /* warm brown */
+            'earth-light':   '#A0714A', /* tan */
+            'gold-accent':   '#C9A84C', /* aged gold */
+            'gold-light':    '#E8CC7A', /* light gold */
+            'fog-white':     '#F0EDE6', /* warm white/mist */
+          },
+          fontFamily: {
+            'display': ['"Playfair Display"', 'Georgia', 'serif'],
+            'body':    ['Inter', 'system-ui', 'sans-serif'],
+            'mono':    ['"Space Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* =============================================
+       BASE STYLES & CSS CUSTOM PROPS
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --door-progress: 0;       /* 0–1, driven by JS scroll */
+      --parallax-offset: 0px;   /* hero parallax Y */
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #0D2818;
+      color: #F0EDE6;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0D2818; }
+    ::-webkit-scrollbar-thumb { background: #2D6A4F; border-radius: 3px; }
+
+    /* =============================================
+       NAVIGATION
+    ============================================= */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s ease, backdrop-filter 0.4s ease;
+    }
+    #navbar.scrolled {
+      background: rgba(13, 40, 24, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: #C9A84C;
+      letter-spacing: -0.02em;
+    }
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #D8F3DC;
+      opacity: 0.75;
+      margin-left: 2rem;
+      transition: opacity 0.2s, color 0.2s;
+      text-decoration: none;
+    }
+    .nav-links a:hover { opacity: 1; color: #C9A84C; }
+
+    /* Mobile nav toggle */
+    #nav-toggle { display: none; cursor: pointer; }
+    @media (max-width: 768px) {
+      .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0;
+        background: rgba(13,40,24,0.97); padding: 1.5rem 2rem; flex-direction: column; }
+      .nav-links.open { display: flex; }
+      .nav-links a { margin: 0.5rem 0; }
+      #nav-toggle { display: block; }
+    }
+
+    /* =============================================
+       HERO SECTION — FOREST PARALLAX
+    ============================================= */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Multi-layer forest parallax background */
+    .parallax-layer {
+      position: absolute;
+      inset: -20% 0;
+      background-size: cover;
+      background-position: center;
+      will-change: transform;
+    }
+
+    /* Layer 1: Deep background sky/fog */
+    .layer-sky {
+      background: radial-gradient(ellipse 120% 80% at 50% 30%,
+        #1e5c3a 0%, #0D2818 60%, #0a1f12 100%);
+      z-index: 1;
+    }
+
+    /* Layer 2: Far trees (SVG inline) */
+    .layer-far {
+      z-index: 2;
+      opacity: 0.6;
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 900'%3E%3Crect width='1440' height='900' fill='none'/%3E%3Cg fill='%230a2a17'%3E%3Crect x='0' y='300' width='50' height='600'/%3E%3Cpolygon points='25,80 0,320 50,320'/%3E%3Cpolygon points='25,160 -10,340 60,340'/%3E%3Crect x='80' y='360' width='40' height='540'/%3E%3Cpolygon points='100,120 70,380 130,380'/%3E%3Crect x='160' y='340' width='45' height='560'/%3E%3Cpolygon points='182,100 150,360 214,360'/%3E%3Crect x='240' y='320' width='55' height='580'/%3E%3Cpolygon points='267,60 230,340 304,340'/%3E%3Crect x='330' y='350' width='40' height='550'/%3E%3Cpolygon points='350,110 318,370 382,370'/%3E%3Crect x='400' y='330' width='50' height='570'/%3E%3Cpolygon points='425,90 390,350 460,350'/%3E%3Crect x='480' y='360' width='42' height='540'/%3E%3Cpolygon points='501,130 468,380 534,380'/%3E%3Crect x='560' y='310' width='60' height='590'/%3E%3Cpolygon points='590,50 550,330 630,330'/%3E%3Crect x='660' y='340' width='45' height='560'/%3E%3Cpolygon points='682,100 648,360 716,360'/%3E%3Crect x='740' y='320' width='50' height='580'/%3E%3Cpolygon points='765,80 730,340 800,340'/%3E%3Crect x='830' y='350' width='40' height='550'/%3E%3Cpolygon points='850,120 818,370 882,370'/%3E%3Crect x='900' y='330' width='55' height='570'/%3E%3Cpolygon points='927,70 890,350 964,350'/%3E%3Crect x='990' y='360' width='42' height='540'/%3E%3Cpolygon points='1011,130 978,380 1044,380'/%3E%3Crect x='1070' y='310' width='60' height='590'/%3E%3Cpolygon points='1100,50 1060,330 1140,330'/%3E%3Crect x='1170' y='340' width='45' height='560'/%3E%3Cpolygon points='1192,100 1158,360 1226,360'/%3E%3Crect x='1250' y='320' width='50' height='580'/%3E%3Cpolygon points='1275,80 1240,340 1310,340'/%3E%3Crect x='1350' y='350' width='40' height='550'/%3E%3Cpolygon points='1370,120 1338,370 1402,370'/%3E%3Crect x='1410' y='330' width='55' height='570'/%3E%3Cpolygon points='1437,70 1400,350 1474,350'/%3E%3C/g%3E%3C/svg%3E") center/cover no-repeat;
+    }
+
+    /* Layer 3: Mid trees */
+    .layer-mid {
+      z-index: 3;
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 900'%3E%3Cg fill='%23112e1c'%3E%3Crect x='20' y='400' width='70' height='500'/%3E%3Cpolygon points='55,150 10,420 100,420'/%3E%3Cpolygon points='55,230 5,440 105,440'/%3E%3Crect x='130' y='420' width='60' height='480'/%3E%3Cpolygon points='160,180 120,440 200,440'/%3E%3Crect x='230' y='390' width='80' height='510'/%3E%3Cpolygon points='270,130 220,410 320,410'/%3E%3Crect x='350' y='410' width='65' height='490'/%3E%3Cpolygon points='382,170 340,430 424,430'/%3E%3Crect x='460' y='395' width='75' height='505'/%3E%3Cpolygon points='497,140 450,415 544,415'/%3E%3Crect x='580' y='405' width='68' height='495'/%3E%3Cpolygon points='614,160 570,425 658,425'/%3E%3Crect x='690' y='385' width='82' height='515'/%3E%3Cpolygon points='731,120 682,405 780,405'/%3E%3Crect x='820' y='410' width='65' height='490'/%3E%3Cpolygon points='852,170 810,430 894,430'/%3E%3Crect x='930' y='395' width='75' height='505'/%3E%3Cpolygon points='967,140 920,415 1014,415'/%3E%3Crect x='1050' y='400' width='70' height='500'/%3E%3Cpolygon points='1085,150 1040,420 1130,420'/%3E%3Crect x='1165' y='390' width='80' height='510'/%3E%3Cpolygon points='1205,130 1155,410 1255,410'/%3E%3Crect x='1290' y='405' width='68' height='495'/%3E%3Cpolygon points='1324,160 1280,425 1368,425'/%3E%3Crect x='1400' y='395' width='75' height='505'/%3E%3Cpolygon points='1437,140 1390,415 1484,415'/%3E%3C/g%3E%3C/svg%3E") center/cover no-repeat;
+    }
+
+    /* Layer 4: Foreground trees (darkest) */
+    .layer-fore {
+      z-index: 4;
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 900'%3E%3Cg fill='%230D2818'%3E%3Crect x='-10' y='450' width='100' height='500'/%3E%3Cpolygon points='40,180 -20,470 100,470'/%3E%3Crect x='120' y='460' width='90' height='490'/%3E%3Cpolygon points='165,200 110,480 220,480'/%3E%3Crect x='260' y='440' width='110' height='510'/%3E%3Cpolygon points='315,160 250,460 380,460'/%3E%3Crect x='420' y='455' width='95' height='500'/%3E%3Cpolygon points='467,190 410,475 524,475'/%3E%3Crect x='570' y='445' width='105' height='510'/%3E%3Cpolygon points='622,170 560,465 684,465'/%3E%3Crect x='730' y='460' width='90' height='500'/%3E%3Cpolygon points='775,200 715,480 835,480'/%3E%3Crect x='880' y='440' width='110' height='520'/%3E%3Cpolygon points='935,160 870,460 1000,460'/%3E%3Crect x='1050' y='455' width='95' height='510'/%3E%3Cpolygon points='1097,190 1040,475 1154,475'/%3E%3Crect x='1200' y='445' width='105' height='520'/%3E%3Cpolygon points='1252,170 1190,465 1314,465'/%3E%3Crect x='1360' y='460' width='100' height='500'/%3E%3Cpolygon points='1410,195 1350,480 1470,480'/%3E%3C/g%3E%3C/svg%3E") center/cover no-repeat;
+    }
+
+    /* Ambient fog/mist overlay */
+    .layer-mist {
+      z-index: 5;
+      background: radial-gradient(ellipse 80% 40% at 50% 70%,
+        rgba(216,243,220,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* =============================================
+       FOREST DOOR / GATE MECHANISM
+       Two panels split from center, open horizontally
+    ============================================= */
+    #door-container {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+      display: flex;
+    }
+
+    /* Left panel */
+    #door-left {
+      width: 50%;
+      height: 100%;
+      background: #0a1e10;
+      transform-origin: left center;
+      transition: none; /* driven entirely by JS/scroll */
+      overflow: hidden;
+      position: relative;
+      border-right: 1px solid rgba(201,168,76,0.3);
+    }
+
+    /* Right panel */
+    #door-right {
+      width: 50%;
+      height: 100%;
+      background: #0a1e10;
+      transform-origin: right center;
+      overflow: hidden;
+      position: relative;
+      border-left: 1px solid rgba(201,168,76,0.3);
+    }
+
+    /* Wood grain texture on doors */
+    #door-left::before, #door-right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          175deg,
+          transparent 0px, transparent 18px,
+          rgba(201,168,76,0.03) 18px, rgba(201,168,76,0.03) 20px
+        ),
+        repeating-linear-gradient(
+          5deg,
+          transparent 0px, transparent 28px,
+          rgba(0,0,0,0.04) 28px, rgba(0,0,0,0.04) 30px
+        );
+    }
+
+    /* Door bark/forest texture overlay */
+    #door-left::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 900'%3E%3Cg fill='none' stroke='%23162b1a' stroke-width='1'%3E%3Cpath d='M20,0 Q60,200 30,400 Q10,600 50,900'/%3E%3Cpath d='M80,0 Q100,300 70,500 Q50,700 90,900'/%3E%3Cpath d='M140,0 Q170,250 145,450 Q120,650 160,900'/%3E%3Cpath d='M200,0 Q230,200 205,400 Q180,600 220,900'/%3E%3Cpath d='M260,0 Q285,300 260,500 Q240,700 275,900'/%3E%3Cpath d='M320,0 Q350,200 325,420 Q305,620 340,900'/%3E%3Cpath d='M380,0 Q400,250 378,460 Q360,660 395,900'/%3E%3C/g%3E%3Cg fill='%23162b1a'%3E%3Cellipse cx='40' cy='200' rx='8' ry='5'/%3E%3Cellipse cx='160' cy='350' rx='6' ry='4'/%3E%3Cellipse cx='280' cy='150' rx='9' ry='5'/%3E%3Cellipse cx='100' cy='600' rx='7' ry='4'/%3E%3Cellipse cx='340' cy='500' rx='6' ry='3'/%3E%3C/g%3E%3C/svg%3E") center/cover;
+    }
+
+    /* Gold ornament on door center */
+    .door-ornament {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #door-left .door-ornament { right: 12px; }
+    #door-right .door-ornament { left: 12px; }
+
+    /* Door arch at top (decorative) */
+    .door-arch {
+      position: absolute;
+      top: 0;
+      left: 0; right: 0;
+      height: 120px;
+      overflow: hidden;
+    }
+
+    /* Foliage framing the doorway opening */
+    .door-foliage-left, .door-foliage-right {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 80px;
+      z-index: 11;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    .door-foliage-left { left: 50%; transform: translateX(-100%); }
+    .door-foliage-right { right: 50%; transform: translateX(100%); }
+
+    /* =============================================
+       HERO CONTENT
+    ============================================= */
+    #hero-content {
+      position: relative;
+      z-index: 20;
+      text-align: center;
+      padding: 2rem;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+    }
+    #hero-content.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #C9A84C;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: #C9A84C;
+      opacity: 0.6;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 900;
+      line-height: 1.05;
+      color: #F0EDE6;
+      margin-bottom: 0.5rem;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: #C9A84C;
+    }
+
+    .hero-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 300;
+      color: rgba(216,243,220,0.8);
+      max-width: 560px;
+      margin: 1.5rem auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: transparent;
+      border: 1px solid #C9A84C;
+      color: #C9A84C;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
+    }
+    .hero-cta:hover {
+      background: #C9A84C;
+      color: #0D2818;
+      transform: translateY(-2px);
+    }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+    .scroll-hint.hidden { opacity: 0; }
+    .scroll-hint span {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.7);
+    }
+    .scroll-arrow {
+      width: 24px;
+      height: 40px;
+      border: 1px solid rgba(201,168,76,0.4);
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      padding-top: 8px;
+    }
+    .scroll-dot {
+      width: 4px;
+      height: 8px;
+      background: #C9A84C;
+      border-radius: 2px;
+      animation: scrollDot 1.8s ease infinite;
+    }
+    @keyframes scrollDot {
+      0%   { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(16px); opacity: 0; }
+    }
+
+    /* =============================================
+       SECTION SHARED STYLES
+    ============================================= */
+    .section {
+      padding: 6rem 0;
+    }
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #C9A84C;
+      opacity: 0.8;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      max-width: 60px;
+      height: 1px;
+      background: currentColor;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: #F0EDE6;
+    }
+    .section-title em { font-style: italic; color: #C9A84C; }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger children */
+    .stagger-children > * {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .stagger-children.visible > *:nth-child(1) { opacity:1; transform:none; transition-delay: 0.05s; }
+    .stagger-children.visible > *:nth-child(2) { opacity:1; transform:none; transition-delay: 0.15s; }
+    .stagger-children.visible > *:nth-child(3) { opacity:1; transform:none; transition-delay: 0.25s; }
+    .stagger-children.visible > *:nth-child(4) { opacity:1; transform:none; transition-delay: 0.35s; }
+    .stagger-children.visible > *:nth-child(5) { opacity:1; transform:none; transition-delay: 0.45s; }
+    .stagger-children.visible > *:nth-child(6) { opacity:1; transform:none; transition-delay: 0.55s; }
+
+    /* Divider leaf ornament */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(201,168,76,0.3));
+    }
+    .divider::after { background: linear-gradient(to left, transparent, rgba(201,168,76,0.3)); }
+
+    /* =============================================
+       ABOUT SECTION
+    ============================================= */
+    #about {
+      background: linear-gradient(to bottom, #0D2818, #111f14);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    .about-visual {
+      position: relative;
+    }
+    .about-photo-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3/4;
+      max-width: 340px;
+      margin: 0 auto;
+    }
+    .about-photo-bg {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1A3D2B 0%, #2D6A4F 50%, #40916C 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    /* Decorative border offset */
+    .about-photo-frame::after {
+      content: '';
+      position: absolute;
+      top: 14px; left: 14px; right: -14px; bottom: -14px;
+      border: 1px solid rgba(201,168,76,0.35);
+      pointer-events: none;
+    }
+    /* Stats badge */
+    .stat-badge {
+      position: absolute;
+      background: #C9A84C;
+      color: #0D2818;
+      padding: 0.75rem 1.25rem;
+    }
+    .stat-badge-bottom {
+      bottom: -1.5rem; right: -1rem;
+    }
+    .stat-badge .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .stat-badge .lbl {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+
+    .about-text p {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: rgba(216,243,220,0.8);
+      margin-bottom: 1.2rem;
+    }
+
+    .skill-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .skill-pill {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.9rem;
+      border: 1px solid rgba(201,168,76,0.4);
+      color: #C9A84C;
+      background: rgba(201,168,76,0.05);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .skill-pill:hover {
+      background: rgba(201,168,76,0.12);
+      border-color: rgba(201,168,76,0.7);
+    }
+
+    /* =============================================
+       SERVICES SECTION
+    ============================================= */
+    #services {
+      background: #111f14;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5px;
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.12);
+      margin-top: 3.5rem;
+    }
+
+    .service-card {
+      background: #0f1d13;
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s ease;
+      cursor: default;
+    }
+    .service-card:hover { background: #132419; }
+
+    /* Top accent line */
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, transparent, #C9A84C, transparent);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(201,168,76,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      color: #C9A84C;
+    }
+    .service-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #F0EDE6;
+      margin-bottom: 0.75rem;
+    }
+    .service-desc {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: rgba(216,243,220,0.65);
+      margin-bottom: 1.5rem;
+    }
+
+    /* KPI bar */
+    .kpi-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+    .kpi-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.7);
+      width: 40px;
+      flex-shrink: 0;
+    }
+    .kpi-bar {
+      flex: 1;
+      height: 3px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+    .kpi-fill {
+      height: 100%;
+      background: linear-gradient(to right, #2D6A4F, #C9A84C);
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.22,1,0.36,1);
+    }
+    .kpi-val {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: #C9A84C;
+      width: 36px;
+      text-align: right;
+    }
+
+    /* =============================================
+       PORTFOLIO / CASE STUDIES
+    ============================================= */
+    #portfolio {
+      background: linear-gradient(to bottom, #111f14, #0D2818);
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
+
+    .case-card {
+      background: #0f1d13;
+      border: 1px solid rgba(201,168,76,0.1);
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .case-card:hover {
+      border-color: rgba(201,168,76,0.35);
+      transform: translateY(-4px);
+    }
+
+    .case-header {
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      padding: 1.25rem;
+    }
+    .case-header-bg {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.5s ease;
+    }
+    .case-card:hover .case-header-bg { transform: scale(1.04); }
+
+    .case-tag {
+      position: relative;
+      z-index: 1;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.7rem;
+      background: rgba(13,40,24,0.8);
+      border: 1px solid rgba(201,168,76,0.4);
+      color: #C9A84C;
+    }
+
+    .case-body { padding: 1.75rem; }
+    .case-client {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.6);
+      margin-bottom: 0.5rem;
+    }
+    .case-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #F0EDE6;
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+    .case-desc {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: rgba(216,243,220,0.65);
+      margin-bottom: 1.5rem;
+    }
+    .case-metrics {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 0.75rem;
+      border-top: 1px solid rgba(201,168,76,0.1);
+      padding-top: 1.25rem;
+    }
+    .metric-item { text-align: center; }
+    .metric-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #C9A84C;
+      line-height: 1;
+    }
+    .metric-lbl {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(216,243,220,0.5);
+      margin-top: 0.25rem;
+    }
+
+    /* =============================================
+       TOOLS DASHBOARD
+    ============================================= */
+    #tools {
+      background: #0a1810;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
+    @media (max-width: 768px) {
+      .tools-grid { grid-template-columns: 1fr; }
+    }
+
+    .tool-group-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.6);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+    }
+
+    .tool-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .tool-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .tool-name {
+      flex: 1;
+      font-size: 0.9rem;
+      color: rgba(216,243,220,0.85);
+    }
+    .tool-bar-outer {
+      width: 100px;
+      height: 4px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .tool-bar-inner {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(to right, #2D6A4F, #C9A84C);
+      width: 0%;
+      transition: width 1.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    .tool-pct {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      color: rgba(201,168,76,0.8);
+      width: 30px;
+      text-align: right;
+    }
+
+    /* Donut chart */
+    .donut-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+      background: rgba(201,168,76,0.03);
+      border: 1px solid rgba(201,168,76,0.1);
+      margin-top: 2rem;
+    }
+    @media (max-width: 640px) {
+      .donut-wrap { flex-direction: column; }
+    }
+    .donut-legend { display: flex; flex-direction: column; gap: 0.75rem; }
+    .legend-item { display: flex; align-items: center; gap: 0.5rem; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .legend-text { font-size: 0.82rem; color: rgba(216,243,220,0.75); }
+
+    /* =============================================
+       CONTACT SECTION
+    ============================================= */
+    #contact {
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 50%, rgba(45,106,79,0.15) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 80% 50%, rgba(201,168,76,0.06) 0%, transparent 70%),
+        #0D2818;
+      z-index: 0;
+    }
+    .contact-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    .contact-info p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: rgba(216,243,220,0.7);
+      margin-bottom: 2rem;
+    }
+    .contact-detail {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: rgba(216,243,220,0.8);
+    }
+    .contact-detail svg { color: #C9A84C; flex-shrink: 0; }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-label {
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.7);
+      margin-bottom: 0.5rem;
+    }
+    .form-input {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,168,76,0.2);
+      color: #F0EDE6;
+      padding: 0.85rem 1rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      resize: none;
+    }
+    .form-input::placeholder { color: rgba(240,237,230,0.25); }
+    .form-input:focus {
+      border-color: rgba(201,168,76,0.6);
+      background: rgba(255,255,255,0.05);
+    }
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: #C9A84C;
+      color: #0D2818;
+      border: none;
+      padding: 1rem 2.25rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.2s;
+      width: 100%;
+      justify-content: center;
+    }
+    .btn-submit:hover {
+      background: #E8CC7A;
+      transform: translateY(-2px);
+    }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      border: 1px solid rgba(64,145,108,0.4);
+      background: rgba(64,145,108,0.06);
+    }
+    .form-success.show { display: block; }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    footer {
+      background: #060f09;
+      border-top: 1px solid rgba(201,168,76,0.1);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #C9A84C;
+      margin-bottom: 1rem;
+    }
+    .footer-tagline {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(216,243,220,0.4);
+      margin-bottom: 2rem;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(216,243,220,0.45);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: #C9A84C; }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: rgba(216,243,220,0.3);
+    }
+
+    /* =============================================
+       MISC UTILITIES
+    ============================================= */
+    .text-gold   { color: #C9A84C; }
+    .text-mist   { color: #D8F3DC; }
+    .text-fog    { color: rgba(216,243,220,0.7); }
+    .bg-card     { background: #0f1d13; }
+
+    /* Thin gold separator line */
+    hr.gold { border: none; height: 1px; background: linear-gradient(to right, transparent, rgba(201,168,76,0.25), transparent); }
+
+    /* Animated number counter */
+    .count-up { font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+
+<body>
+
+  <!-- =============================================
+       NAVIGATION
+  ============================================= -->
+  <nav id="navbar" aria-label="Main navigation">
+    <div class="nav-logo">bayu febrian</div>
+    <button id="nav-toggle" aria-label="Toggle navigation" class="text-forest-mist">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <div class="nav-links" id="nav-menu">
+      <a href="#about">Tentang</a>
+      <a href="#services">Layanan</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#tools">Tools</a>
+      <a href="#contact">Kontak</a>
+    </div>
+  </nav>
+
+  <!-- =============================================
+       HERO SECTION — THE FOREST GATE
+  ============================================= -->
+  <section id="hero" aria-label="Hero — Forest Gate">
+
+    <!-- Parallax background layers -->
+    <div class="parallax-layer layer-sky"  data-parallax="0.1"  id="layer-sky"></div>
+    <div class="parallax-layer layer-far"  data-parallax="0.25" id="layer-far"></div>
+    <div class="parallax-layer layer-mid"  data-parallax="0.45" id="layer-mid"></div>
+    <div class="parallax-layer layer-fore" data-parallax="0.7"  id="layer-fore"></div>
+    <div class="parallax-layer layer-mist" data-parallax="0.1"  id="layer-mist"></div>
+
+    <!-- Forest Gate / Door -->
+    <div id="door-container" aria-hidden="true">
+      <!-- Left door panel -->
+      <div id="door-left">
+        <div class="door-ornament">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#C9A84C" stroke-width="1">
+            <circle cx="16" cy="16" r="12"/>
+            <circle cx="16" cy="16" r="6"/>
+            <line x1="16" y1="4" x2="16" y2="10"/>
+            <line x1="16" y1="22" x2="16" y2="28"/>
+            <line x1="4"  y1="16" x2="10" y2="16"/>
+            <line x1="22" y1="16" x2="28" y2="16"/>
+          </svg>
+        </div>
+        <!-- Decorative foliage SVG embedded -->
+        <svg style="position:absolute;top:0;right:0;height:100%;opacity:0.15;" viewBox="0 0 80 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMid slice">
+          <g fill="#2D6A4F">
+            <ellipse cx="60" cy="100" rx="35" ry="20" transform="rotate(-30,60,100)"/>
+            <ellipse cx="50" cy="200" rx="40" ry="18" transform="rotate(20,50,200)"/>
+            <ellipse cx="65" cy="320" rx="30" ry="22" transform="rotate(-15,65,320)"/>
+            <ellipse cx="45" cy="450" rx="38" ry="16" transform="rotate(25,45,450)"/>
+            <ellipse cx="60" cy="580" rx="32" ry="20" transform="rotate(-20,60,580)"/>
+            <ellipse cx="50" cy="720" rx="42" ry="18" transform="rotate(15,50,720)"/>
+          </g>
+        </svg>
+      </div>
+      <!-- Right door panel -->
+      <div id="door-right">
+        <div class="door-ornament">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#C9A84C" stroke-width="1">
+            <circle cx="16" cy="16" r="12"/>
+            <circle cx="16" cy="16" r="6"/>
+            <line x1="16" y1="4" x2="16" y2="10"/>
+            <line x1="16" y1="22" x2="16" y2="28"/>
+            <line x1="4"  y1="16" x2="10" y2="16"/>
+            <line x1="22" y1="16" x2="28" y2="16"/>
+          </svg>
+        </div>
+        <svg style="position:absolute;top:0;left:0;height:100%;opacity:0.15;" viewBox="0 0 80 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMid slice">
+          <g fill="#2D6A4F">
+            <ellipse cx="20" cy="120" rx="35" ry="20" transform="rotate(30,20,120)"/>
+            <ellipse cx="30" cy="240" rx="40" ry="18" transform="rotate(-20,30,240)"/>
+            <ellipse cx="15" cy="370" rx="30" ry="22" transform="rotate(15,15,370)"/>
+            <ellipse cx="35" cy="490" rx="38" ry="16" transform="rotate(-25,35,490)"/>
+            <ellipse cx="20" cy="620" rx="32" ry="20" transform="rotate(20,20,620)"/>
+            <ellipse cx="30" cy="760" rx="42" ry="18" transform="rotate(-15,30,760)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Hero content (revealed as door opens) -->
+    <div id="hero-content">
+      <div class="hero-eyebrow">Digital Marketing Strategist</div>
+      <h1 class="hero-title">
+        Di Rimba Digital,<br>
+        <em>Algoritma</em> adalah Tanahku.
+      </h1>
+      <p class="hero-subtitle">
+        Saya Raka Wibisono — penjelajah ekosistem digital yang mengubah data mentah menjadi pertumbuhan bisnis nyata. Setiap kampanye adalah ekspedisi, setiap metrik adalah kompas.
+      </p>
+      <a href="#about" class="hero-cta">
+        Mulai Eksplorasi
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-hint" id="scroll-hint">
+      <div class="scroll-arrow"><div class="scroll-dot"></div></div>
+      <span>Scroll untuk membuka</span>
+    </div>
+
+  </section>
+
+  <!-- =============================================
+       ABOUT SECTION
+  ============================================= -->
+  <section id="about" class="section">
+    <div class="section-inner">
+      <div class="about-grid">
+
+        <!-- Visual / photo frame -->
+        <div class="about-visual reveal">
+          <div class="about-photo-frame">
+            <div class="about-photo-bg">
+              <!-- Silhouette illustration placeholder -->
+                <img src="bayu.png" alt="">
+            </div>
+            <!-- Stats badge -->
+            <div class="stat-badge stat-badge-bottom">
+              <div class="num">7+</div>
+              <div class="lbl">Tahun Pengalaman</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text content -->
+        <div class="about-text reveal">
+          <div class="section-label">Tentang Saya</div>
+          <h2 class="section-title">Penjelajah <em>Ekosistem</em> Digital</h2>
+
+          <div class="divider">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="#C9A84C" opacity="0.6">
+              <path d="M8 0 L10 6 L16 8 L10 10 L8 16 L6 10 L0 8 L6 6 Z"/>
+            </svg>
+          </div>
+
+          <p>Seperti seorang penjelajah di hutan lebat, saya menavigasi rimba digital dengan bekal yang tepat: data, strategi, dan kreativitas yang terukur. Bukan sekadar membuat konten — saya membangun <strong style="color:#D8F3DC">ekosistem digital</strong> yang berkembang dan menghasilkan.</p>
+
+          <p>Dengan lebih dari 7 tahun mengarungi perubahan algoritma Google, Facebook, TikTok, dan berbagai platform digital, saya telah membantu puluhan brand lokal dan nasional keluar dari bayang-bayang kompetitor dan menemukan cahaya pertumbuhan mereka sendiri.</p>
+
+          <p>Filosofi saya sederhana: <em style="color:#C9A84C">setiap rupiah anggaran iklan adalah benih</em> — tugas saya memastikan ia tumbuh di tanah yang subur.</p>
+
+          <div class="skill-pills">
+            <span class="skill-pill">Growth Marketing</span>
+            <span class="skill-pill">Performance Ads</span>
+            <span class="skill-pill">SEO/SEM</span>
+            <span class="skill-pill">Content Strategy</span>
+            <span class="skill-pill">Data Analytics</span>
+            <span class="skill-pill">CRO</span>
+            <span class="skill-pill">Email Marketing</span>
+            <span class="skill-pill">Brand Positioning</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="gold">
+
+  <!-- =============================================
+       SERVICES SECTION
+  ============================================= -->
+  <section id="services" class="section">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">Apa yang Saya Lakukan</div>
+        <h2 class="section-title">Layanan <em>Strategis</em></h2>
+        <p style="margin-top:1rem;max-width:540px;color:rgba(216,243,220,0.65);line-height:1.8;font-size:0.95rem;">
+          Setiap layanan dirancang bukan sebagai produk instan, melainkan sebagai strategi jangka panjang yang mengakar kuat — seperti pohon di hutan rimba yang terus tumbuh.
+        </p>
+      </div>
+
+      <!-- Services grid -->
+      <div class="services-grid stagger-children" id="services-grid">
+
+        <!-- Social Media Marketing -->
+        <div class="service-card">
+          <div class="service-icon" aria-hidden="true">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+          </div>
+          <div class="service-name">Social Media Marketing</div>
+          <p class="service-desc">Membangun komunitas organik dan eksekusi kampanye berbayar yang menghasilkan engagement nyata, bukan sekadar vanity metrics.</p>
+          <div class="kpi-row">
+            <span class="kpi-label">Reach</span>
+            <div class="kpi-bar"><div class="kpi-fill" data-width="92"></div></div>
+            <span class="kpi-val">92%</span>
+          </div>
+          <div class="kpi-row">
+            <span class="kpi-label">CTR</span>
+            <div class="kpi-bar"><div class="kpi-fill" data-width="78"></div></div>
+            <span class="kpi-val">78%</span>
+          </div>
+          <div class="kpi-row">
+            <span class="kpi-label">Eng.</span>
+            <div class="kpi-bar"><div class="kpi-fill" data-width="85"></div></div>
+            <span class="kpi-val">85%</span>
+          </div>
+        </div>
+
+        <!-- SEO Strategy -->
+        <div class="service-card">
+          <div class="service-icon" aria-hidden="true">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+              <path d="M11 8v6M8 11h6"/>
+            </svg>
+          </div>
+          <div class="service-name">SEO Strategy</div>
+          <p class="service-desc">Audit teknikal mendalam, riset keyword berbasis intent, dan link building yang membangun otoritas domain secara berkelanjutan.</p>
+          <div class="kpi-row">
+            <span class="kpi-label">DA</span>
+            <div class="kpi-bar"><div class="kpi-fill" data-width="88"></div></div>
+            <span class="kpi-val">88%</span>
+          </div>
+          <div class="kpi-row">
+            <span class="kpi-label">Rank</span>
+            <div class="kpi-bar"><div class="kpi-fill" data-width="94"></div></div>
+            <span class="kpi-val">94%</span>
+          </div>
+          <div class="kpi-row">
+            <span class="kpi-label">Traffic</span>
+            <div class="kpi-bar"><div class="kpi-fill" data-width="81"></div></div>
+            <span class="kpi-val">81%</span>
+          </div>
+        </div>
+
+        <!-- Paid Ads -->
+        <div class="service-card">
+          <div class="service-icon" aria-hidden="true">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+              <polyline points="16 7 22 7 22 13"/>
+            </svg>
+          </div>
+          <div class="service-name">Paid Ads — Meta & Google</div>
+          <p class="service-desc">Manajemen anggaran iklan yang efisien dengan A/B testing kontinyu, targeting presisi, dan optimasi ROAS yang agresif namun terukur.</p>
+          <div class="kpi-row">
+            <span class="kpi-label">ROAS</span>
+            <div class="kpi-bar"><div class="kpi-fill" data-width="96"></div></div>
+            <span class="kpi-val">96%</span>
+          </div>
+          <div class="kpi-row">
+            <span class="kpi-label">CPC</span>
+            <div class="kpi-bar"><div class="kpi-fill" data-width="89"></div></div>
+            <span class="kpi-val">89%</span>
+          </div>
+          <div class="kpi-row">
+            <span class="kpi-label">Conv.</span>
+            <div class="kpi-bar"><div class="kpi-fill" data-width="91"></div></div>
+            <span class="kpi-val">91%</span>
+          </div>
+        </div>
+
+        <!-- Data Analytics -->
+        <div class="service-card">
+          <div class="service-icon" aria-hidden="true">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <rect x="2" y="2" width="20" height="20" rx="2"/>
+              <path d="M7 16l3-4 3 4 4-6"/>
+            </svg>
+          </div>
+          <div class="service-name">Data Analytics & Reporting</div>
+          <p class="service-desc">Transformasi data mentah menjadi insight yang dapat ditindaklanjuti. Dashboard custom, attribution modeling, dan laporan eksekutif.</p>
+          <div class="kpi-row">
+            <span class="kpi-label">Acc.</span>
+            <div class="kpi-bar"><div class="kpi-fill" data-width="97"></div></div>
+            <span class="kpi-val">97%</span>
+          </div>
+          <div class="kpi-row">
+            <span class="kpi-label">Insight</span>
+            <div class="kpi-bar"><div class="kpi-fill" data-width="90"></div></div>
+            <span class="kpi-val">90%</span>
+          </div>
+          <div class="kpi-row">
+            <span class="kpi-label">Speed</span>
+            <div class="kpi-bar"><div class="kpi-fill" data-width="83"></div></div>
+            <span class="kpi-val">83%</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="gold">
+
+  <!-- =============================================
+       PORTFOLIO / CASE STUDIES
+  ============================================= -->
+  <section id="portfolio" class="section">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">Hasil Nyata</div>
+        <h2 class="section-title">Case Studies <em>Terpilih</em></h2>
+        <p style="margin-top:1rem;max-width:580px;color:rgba(216,243,220,0.65);line-height:1.8;font-size:0.95rem;">
+          Angka-angka ini bukan klaim kosong — ini adalah jejak ekspedisi nyata di rimba digital, lengkap dengan tantangan, strategi, dan hasilnya.
+        </p>
+      </div>
+
+      <div class="portfolio-grid stagger-children" id="portfolio-grid">
+
+        <!-- Case 1 -->
+        <div class="case-card">
+          <div class="case-header">
+            <div class="case-header-bg" style="background:linear-gradient(135deg,#1A3D2B,#2D6A4F,#40916C);"></div>
+            <!-- Data stream decoration -->
+            <svg style="position:absolute;inset:0;opacity:0.15;" viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice">
+              <polyline points="0,120 50,100 100,130 150,80 200,110 250,60 300,90 350,50 400,70" fill="none" stroke="#C9A84C" stroke-width="2"/>
+              <polyline points="0,140 60,130 120,145 180,110 240,130 300,105 360,120 400,100" fill="none" stroke="#40916C" stroke-width="1"/>
+            </svg>
+            <span class="case-tag">Meta Ads + SEO</span>
+          </div>
+          <div class="case-body">
+            <div class="case-client">E-Commerce Fashion — Surabaya</div>
+            <h3 class="case-title">Dari 0 ke 50K Monthly Visitors dalam 6 Bulan</h3>
+            <p class="case-desc">Brand fashion lokal dengan budget minim butuh explosive growth. Kombinasi konten SEO pillar page dan retargeting Meta Ads menghasilkan lompatan organik yang tidak pernah mereka bayangkan.</p>
+            <div class="case-metrics">
+              <div class="metric-item">
+                <div class="metric-val count-up" data-target="347">347%</div>
+                <div class="metric-lbl">Traffic Growth</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-val count-up" data-target="4.2">4.2x</div>
+                <div class="metric-lbl">ROAS</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-val count-up" data-target="68">68%</div>
+                <div class="metric-lbl">Cost per Lead ↓</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Case 2 -->
+        <div class="case-card">
+          <div class="case-header">
+            <div class="case-header-bg" style="background:linear-gradient(135deg,#2a1e0a,#6B4226,#A0714A);"></div>
+            <svg style="position:absolute;inset:0;opacity:0.15;" viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice">
+              <circle cx="200" cy="90" r="60" fill="none" stroke="#C9A84C" stroke-width="1" stroke-dasharray="8,4"/>
+              <circle cx="200" cy="90" r="40" fill="none" stroke="#C9A84C" stroke-width="1" stroke-dasharray="4,6"/>
+              <circle cx="200" cy="90" r="20" fill="none" stroke="#E8CC7A" stroke-width="1"/>
+            </svg>
+            <span class="case-tag">Google Ads + Analytics</span>
+          </div>
+          <div class="case-body">
+            <div class="case-client">SaaS Startup — Jakarta</div>
+            <h3 class="case-title">Restrukturisasi Kampanye: ROAS Naik 3x dalam 90 Hari</h3>
+            <p class="case-desc">Startup ini membakar anggaran iklan tanpa hasil terukur. Audit menyeluruh mengungkap audience mismatch kritis. Restrukturisasi total dengan smart bidding dan conversion tracking yang proper membalik situasi.</p>
+            <div class="case-metrics">
+              <div class="metric-item">
+                <div class="metric-val">3.1x</div>
+                <div class="metric-lbl">ROAS Naik</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-val">52%</div>
+                <div class="metric-lbl">CPA Turun</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-val">218%</div>
+                <div class="metric-lbl">Konversi</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Case 3 -->
+        <div class="case-card">
+          <div class="case-header">
+            <div class="case-header-bg" style="background:linear-gradient(135deg,#0a1e2a,#1a4060,#2D6A4F);"></div>
+            <svg style="position:absolute;inset:0;opacity:0.15;" viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice">
+              <rect x="40" y="60" width="30" height="80" fill="#C9A84C"/>
+              <rect x="90" y="40" width="30" height="100" fill="#C9A84C"/>
+              <rect x="140" y="70" width="30" height="70" fill="#C9A84C"/>
+              <rect x="190" y="30" width="30" height="110" fill="#E8CC7A"/>
+              <rect x="240" y="50" width="30" height="90" fill="#C9A84C"/>
+              <rect x="290" y="20" width="30" height="120" fill="#C9A84C"/>
+              <rect x="340" y="45" width="30" height="95" fill="#C9A84C"/>
+            </svg>
+            <span class="case-tag">Content + SMM</span>
+          </div>
+          <div class="case-body">
+            <div class="case-client">Kuliner F&B — Bandung</div>
+            <h3 class="case-title">Viral Organik: 2M Reach dalam 30 Hari Tanpa Iklan</h3>
+            <p class="case-desc">Strategi konten yang berfokus pada storytelling lokal dan tren audio TikTok menciptakan efek viral yang membanjiri antrian reservasi restoran hingga 3 minggu ke depan.</p>
+            <div class="case-metrics">
+              <div class="metric-item">
+                <div class="metric-val">2M+</div>
+                <div class="metric-lbl">Total Reach</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-val">18K</div>
+                <div class="metric-lbl">Followers Baru</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-val">580%</div>
+                <div class="metric-lbl">Revenue ↑</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="gold">
+
+  <!-- =============================================
+       MARKETING TOOLS DASHBOARD
+  ============================================= -->
+  <section id="tools" class="section">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">Peralatan Ekspedisi</div>
+        <h2 class="section-title">Marketing <em>Tools</em> Arsenal</h2>
+        <p style="margin-top:1rem;max-width:520px;color:rgba(216,243,220,0.65);line-height:1.8;font-size:0.95rem;">
+          Seorang penjelajah dikenal dari perlengkapannya. Ini adalah toolkit yang saya gunakan setiap hari untuk membaca medan, menavigasi, dan mengukur perjalanan.
+        </p>
+      </div>
+
+      <div class="tools-grid reveal" id="tools-section">
+
+        <!-- Analytics & Data -->
+        <div>
+          <div class="tool-group-label">Analytics & Data Intelligence</div>
+          <div class="tool-item">
+            <div class="tool-logo" style="background:#e8f5e9;color:#1a7340;">GA</div>
+            <span class="tool-name">Google Analytics 4</span>
+            <div class="tool-bar-outer"><div class="tool-bar-inner" data-width="97"></div></div>
+            <span class="tool-pct">97%</span>
+          </div>
+          <div class="tool-item">
+            <div class="tool-logo" style="background:#fff3e0;color:#e65100;">GTM</div>
+            <span class="tool-name">Google Tag Manager</span>
+            <div class="tool-bar-outer"><div class="tool-bar-inner" data-width="92"></div></div>
+            <span class="tool-pct">92%</span>
+          </div>
+          <div class="tool-item">
+            <div class="tool-logo" style="background:#e3f2fd;color:#1565c0;">Lkd</div>
+            <span class="tool-name">Looker Studio</span>
+            <div class="tool-bar-outer"><div class="tool-bar-inner" data-width="88"></div></div>
+            <span class="tool-pct">88%</span>
+          </div>
+          <div class="tool-item">
+            <div class="tool-logo" style="background:#fce4ec;color:#880e4f;">MP</div>
+            <span class="tool-name">Mixpanel</span>
+            <div class="tool-bar-outer"><div class="tool-bar-inner" data-width="79"></div></div>
+            <span class="tool-pct">79%</span>
+          </div>
+          <div class="tool-item">
+            <div class="tool-logo" style="background:#f3e5f5;color:#4a148c;">Hj</div>
+            <span class="tool-name">Hotjar / Clarity</span>
+            <div class="tool-bar-outer"><div class="tool-bar-inner" data-width="85"></div></div>
+            <span class="tool-pct">85%</span>
+          </div>
+        </div>
+
+        <!-- Ads & SEO -->
+        <div>
+          <div class="tool-group-label">Paid Advertising & SEO</div>
+          <div class="tool-item">
+            <div class="tool-logo" style="background:#e8f5e9;color:#1565c0;">GAd</div>
+            <span class="tool-name">Google Ads</span>
+            <div class="tool-bar-outer"><div class="tool-bar-inner" data-width="95"></div></div>
+            <span class="tool-pct">95%</span>
+          </div>
+          <div class="tool-item">
+            <div class="tool-logo" style="background:#e3f2fd;color:#1a237e;">Meta</div>
+            <span class="tool-name">Meta Ads Manager</span>
+            <div class="tool-bar-outer"><div class="tool-bar-inner" data-width="96"></div></div>
+            <span class="tool-pct">96%</span>
+          </div>
+          <div class="tool-item">
+            <div class="tool-logo" style="background:#fff8e1;color:#f57f17;">SEM</div>
+            <span class="tool-name">SEMrush</span>
+            <div class="tool-bar-outer"><div class="tool-bar-inner" data-width="91"></div></div>
+            <span class="tool-pct">91%</span>
+          </div>
+          <div class="tool-item">
+            <div class="tool-logo" style="background:#e0f7fa;color:#006064;">Ahf</div>
+            <span class="tool-name">Ahrefs</span>
+            <div class="tool-bar-outer"><div class="tool-bar-inner" data-width="87"></div></div>
+            <span class="tool-pct">87%</span>
+          </div>
+          <div class="tool-item">
+            <div class="tool-logo" style="background:#fce4ec;color:#c62828;">TkT</div>
+            <span class="tool-name">TikTok Ads</span>
+            <div class="tool-bar-outer"><div class="tool-bar-inner" data-width="82"></div></div>
+            <span class="tool-pct">82%</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Donut chart: Budget allocation -->
+      <div class="donut-wrap reveal" id="donut-section">
+        <div>
+          <canvas id="budgetDonut" width="180" height="180"></canvas>
+        </div>
+        <div>
+          <p style="font-family:'Space Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(201,168,76,0.6);margin-bottom:1rem;">Distribusi Channel Optimal</p>
+          <div class="donut-legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#2D6A4F;"></div>
+              <span class="legend-text">Paid Search / Google Ads — 35%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#40916C;"></div>
+              <span class="legend-text">Social Media Ads (Meta+TikTok) — 30%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#C9A84C;"></div>
+              <span class="legend-text">SEO & Content Marketing — 20%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#E8CC7A;"></div>
+              <span class="legend-text">Email & CRM Automation — 10%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#6B4226;"></div>
+              <span class="legend-text">Influencer & Collab — 5%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="gold">
+
+  <!-- =============================================
+       CONTACT SECTION
+  ============================================= -->
+  <section id="contact" class="section">
+    <div class="contact-bg"></div>
+    <div class="section-inner">
+      <div class="contact-inner">
+
+        <!-- Info -->
+        <div class="reveal">
+          <div class="section-label">Mulai Ekspedisi Bersama</div>
+          <h2 class="section-title">Siap <em>Menaklukkan</em><br>Algoritma Bersama?</h2>
+          <div class="divider" style="margin:1.5rem 0;">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="#C9A84C" opacity="0.6">
+              <path d="M7 0 L8.5 5.5 L14 7 L8.5 8.5 L7 14 L5.5 8.5 L0 7 L5.5 5.5 Z"/>
+            </svg>
+          </div>
+          <p>Setiap bisnis punya cerita pertumbuhan yang belum diceritakan. Mari kita eksplorasi bersama potensi digital brand Anda — dari audit strategi gratis hingga eksekusi kampanye full-scale.</p>
+          <div class="contact-detail">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <span>halo@rakawibisono.id</span>
+          </div>
+          <div class="contact-detail">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.4a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.72h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 10.4a16 16 0 0 0 6 6l1.09-1.09a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <span>+62 812-3456-7890</span>
+          </div>
+          <div class="contact-detail">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span>Surabaya, Jawa Timur — Remote Friendly</span>
+          </div>
+          <!-- Social -->
+          <div style="display:flex;gap:1rem;margin-top:2rem;">
+            <a href="#" aria-label="LinkedIn" style="width:38px;height:38px;border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;color:#C9A84C;transition:background 0.2s;" onmouseenter="this.style.background='rgba(201,168,76,0.1)'" onmouseleave="this.style.background='transparent'">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="#" aria-label="Instagram" style="width:38px;height:38px;border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;color:#C9A84C;transition:background 0.2s;" onmouseenter="this.style.background='rgba(201,168,76,0.1)'" onmouseleave="this.style.background='transparent'">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="#" aria-label="Twitter/X" style="width:38px;height:38px;border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;color:#C9A84C;transition:background 0.2s;" onmouseenter="this.style.background='rgba(201,168,76,0.1)'" onmouseleave="this.style.background='transparent'">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.631L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="reveal" style="transition-delay:0.2s;">
+          <div id="contact-form-wrap">
+            <div class="form-group">
+              <label class="form-label" for="name">Nama Lengkap</label>
+              <input class="form-input" type="text" id="name" placeholder="Budi Santoso" required/>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="email">Email</label>
+              <input class="form-input" type="email" id="email" placeholder="budi@perusahaan.com" required/>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="company">Perusahaan / Brand</label>
+              <input class="form-input" type="text" id="company" placeholder="PT. Maju Bersama"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="service">Layanan yang Diminati</label>
+              <select class="form-input" id="service">
+                <option value="" style="background:#0D2818">Pilih layanan...</option>
+                <option value="smm" style="background:#0D2818">Social Media Marketing</option>
+                <option value="seo" style="background:#0D2818">SEO Strategy</option>
+                <option value="ads" style="background:#0D2818">Paid Ads (Meta/Google)</option>
+                <option value="analytics" style="background:#0D2818">Data Analytics</option>
+                <option value="full" style="background:#0D2818">Full Digital Marketing</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="message">Ceritakan Tantangan Anda</label>
+              <textarea class="form-input" id="message" rows="4" placeholder="Bisnis saya sedang..."></textarea>
+            </div>
+            <button type="button" class="btn-submit" id="submit-btn" onclick="submitForm()">
+              Kirim Pesan Ekspedisi
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Success state -->
+          <div class="form-success" id="form-success">
+            <svg width="48" height="48" fill="none" stroke="#40916C" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 1rem;">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:#F0EDE6;margin-bottom:0.75rem;">Pesan Terkirim!</h3>
+            <p style="color:rgba(216,243,220,0.7);font-size:0.9rem;line-height:1.7;">Terima kasih telah menghubungi saya. Saya akan merespons dalam 1×24 jam untuk memulai ekspedisi digital kita bersama.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       FOOTER
+  ============================================= -->
+  <footer>
+    <div class="footer-logo">Raka Wibisono</div>
+    <div class="footer-tagline">Digital Marketing Strategist — Surabaya, Indonesia</div>
+    <div class="footer-links">
+      <a href="#about">Tentang</a>
+      <a href="#services">Layanan</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#tools">Tools</a>
+      <a href="#contact">Kontak</a>
+    </div>
+    <p class="footer-copy">© 2025 Raka Wibisono. Semua data kampanye bersifat ilustratif. Crafted with strategy & soul.</p>
+  </footer>
+
+
+  <!-- =============================================
+       JAVASCRIPT
+  ============================================= -->
+  <script>
+    /* ================================================
+       1. DOOR / GATE PARALLAX MECHANISM
+       Door opens as user scrolls. Progress 0→1 over
+       the first 100vh of scroll.
+    ================================================ */
+    const doorLeft   = document.getElementById('door-left');
+    const doorRight  = document.getElementById('door-right');
+    const heroContent = document.getElementById('hero-content');
+    const scrollHint  = document.getElementById('scroll-hint');
+    const DOOR_SCROLL_RANGE = window.innerHeight; // 100vh worth of scroll to fully open
+
+    function updateDoor(scrollY) {
+      // progress 0 (closed) → 1 (fully open)
+      const progress = Math.min(scrollY / DOOR_SCROLL_RANGE, 1);
+
+      // translateX: left panel slides left, right panel slides right
+      // At progress=1: panels move 100% of their own width
+      const shift = progress * 100;
+
+      doorLeft.style.transform  = `translateX(-${shift}%)`;
+      doorRight.style.transform = `translateX(${shift}%)`;
+
+      // Door panels fade out as they open
+      const doorOpacity = Math.max(1 - progress * 1.5, 0);
+      doorLeft.style.opacity  = doorOpacity;
+      doorRight.style.opacity = doorOpacity;
+
+      // Hero content fades in after door is 40% open
+      if (progress > 0.35) {
+        heroContent.classList.add('revealed');
+      } else {
+        heroContent.classList.remove('revealed');
+      }
+
+      // Scroll hint hides once user starts scrolling
+      if (scrollY > 10) {
+        scrollHint.classList.add('hidden');
+      } else {
+        scrollHint.classList.remove('hidden');
+      }
+
+      // Pointer events: once fully open, disable door overlay
+      if (progress >= 1) {
+        doorLeft.style.pointerEvents  = 'none';
+        doorRight.style.pointerEvents = 'none';
+      }
+    }
+
+    /* ================================================
+       2. MULTI-LAYER PARALLAX (hero background layers)
+    ================================================ */
+    function updateParallax(scrollY) {
+      const layers = document.querySelectorAll('.parallax-layer[data-parallax]');
+      layers.forEach(layer => {
+        const speed  = parseFloat(layer.dataset.parallax);
+        const offset = scrollY * speed;
+        layer.style.transform = `translateY(${offset}px)`;
+      });
+    }
+
+    /* ================================================
+       3. NAVBAR SCROLL STATE
+    ================================================ */
+    const navbar = document.getElementById('navbar');
+    function updateNavbar(scrollY) {
+      if (scrollY > 60) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    }
+
+    /* ================================================
+       4. MAIN SCROLL HANDLER (RAF throttled)
+    ================================================ */
+    let ticking = false;
+    let lastScrollY = 0;
+
+    window.addEventListener('scroll', () => {
+      lastScrollY = window.scrollY;
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateDoor(lastScrollY);
+          updateParallax(lastScrollY);
+          updateNavbar(lastScrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // Initial state
+    updateDoor(0);
+    updateParallax(0);
+
+    /* ================================================
+       5. INTERSECTION OBSERVER — scroll-triggered reveals
+    ================================================ */
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+
+          // Trigger KPI bar fills inside service cards
+          if (entry.target.id === 'services-grid') {
+            triggerKpiBars();
+          }
+
+          // Trigger tool bars
+          if (entry.target.id === 'tools-section') {
+            triggerToolBars();
+          }
+
+          // Trigger donut chart
+          if (entry.target.id === 'donut-section') {
+            drawDonut();
+          }
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal, .stagger-children').forEach(el => {
+      revealObserver.observe(el);
+    });
+
+    /* ================================================
+       6. KPI BAR ANIMATION
+    ================================================ */
+    function triggerKpiBars() {
+      document.querySelectorAll('.kpi-fill').forEach(bar => {
+        const targetWidth = bar.dataset.width + '%';
+        setTimeout(() => { bar.style.width = targetWidth; }, 100);
+      });
+    }
+
+    /* ================================================
+       7. TOOL BAR ANIMATION
+    ================================================ */
+    function triggerToolBars() {
+      document.querySelectorAll('.tool-bar-inner').forEach((bar, i) => {
+        const targetWidth = bar.dataset.width + '%';
+        setTimeout(() => { bar.style.width = targetWidth; }, i * 80);
+      });
+    }
+
+    /* ================================================
+       8. DONUT CHART (Canvas)
+    ================================================ */
+    let donutDrawn = false;
+    function drawDonut() {
+      if (donutDrawn) return;
+      donutDrawn = true;
+
+      const canvas = document.getElementById('budgetDonut');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      const data = [
+        { value: 35, color: '#2D6A4F' },
+        { value: 30, color: '#40916C' },
+        { value: 20, color: '#C9A84C' },
+        { value: 10, color: '#E8CC7A' },
+        { value:  5, color: '#6B4226' },
+      ];
+
+      const cx = 90, cy = 90, r = 75, innerR = 46;
+      let startAngle = -Math.PI / 2;
+      const total = data.reduce((s, d) => s + d.value, 0);
+
+      // Animated draw
+      let animProgress = 0;
+      const animDuration = 1200;
+      const startTime = performance.now();
+
+      function animateDonut(now) {
+        animProgress = Math.min((now - startTime) / animDuration, 1);
+        // Ease out
+        const ease = 1 - Math.pow(1 - animProgress, 3);
+
+        ctx.clearRect(0, 0, 180, 180);
+
+        // Draw background ring
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.arc(cx, cy, innerR, Math.PI * 2, 0, true);
+        ctx.fillStyle = 'rgba(255,255,255,0.03)';
+        ctx.fill();
+
+        let currentAngle = -Math.PI / 2;
+        const totalAngle = Math.PI * 2 * ease;
+        let consumed = 0;
+
+        data.forEach(slice => {
+          const sliceAngle = (slice.value / total) * Math.PI * 2;
+          const drawAngle  = Math.min(sliceAngle, Math.max(0, totalAngle - consumed));
+
+          if (drawAngle > 0) {
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, r, currentAngle, currentAngle + drawAngle);
+            ctx.arc(cx, cy, innerR, currentAngle + drawAngle, currentAngle, true);
+            ctx.closePath();
+            ctx.fillStyle = slice.color;
+            ctx.fill();
+
+            // Gap between slices
+            ctx.beginPath();
+            ctx.arc(cx, cy, r + 1, currentAngle, currentAngle + drawAngle);
+            ctx.strokeStyle = '#0a1810';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+          }
+
+          currentAngle += sliceAngle;
+          consumed     += sliceAngle;
+        });
+
+        // Center text
+        ctx.fillStyle = '#F0EDE6';
+        ctx.font = 'bold 18px "Playfair Display", serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Budget', cx, cy - 5);
+        ctx.font = '10px "Space Mono", monospace';
+        ctx.fillStyle = 'rgba(201,168,76,0.8)';
+        ctx.fillText('ALLOC.', cx, cy + 12);
+
+        if (animProgress < 1) requestAnimationFrame(animateDonut);
+      }
+      requestAnimationFrame(animateDonut);
+    }
+
+    /* ================================================
+       9. CONTACT FORM SUBMISSION
+    ================================================ */
+    function submitForm() {
+      const name    = document.getElementById('name').value.trim();
+      const email   = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !email || !message) {
+        // Shake invalid inputs
+        [document.getElementById('name'), document.getElementById('email'), document.getElementById('message')]
+          .forEach(el => {
+            if (!el.value.trim()) {
+              el.style.borderColor = 'rgba(220,80,80,0.6)';
+              el.style.animation = 'shake 0.3s ease';
+              setTimeout(() => {
+                el.style.animation = '';
+                el.style.borderColor = '';
+              }, 400);
+            }
+          });
+        return;
+      }
+
+      const btn = document.getElementById('submit-btn');
+      btn.textContent = 'Mengirim...';
+      btn.disabled = true;
+
+      // Simulate async submission
+      setTimeout(() => {
+        document.getElementById('contact-form-wrap').style.display = 'none';
+        document.getElementById('form-success').classList.add('show');
+      }, 1200);
+    }
+
+    /* ================================================
+       10. NAV MOBILE TOGGLE
+    ================================================ */
+    document.getElementById('nav-toggle').addEventListener('click', () => {
+      document.getElementById('nav-menu').classList.toggle('open');
+    });
+
+    // Close mobile nav on link click
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('nav-menu').classList.remove('open');
+      });
+    });
+
+    /* ================================================
+       11. SMOOTH SCROLL for anchor links
+    ================================================ */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    /* ================================================
+       12. SHAKE KEYFRAME (injected)
+    ================================================ */
+    const shakeStyle = document.createElement('style');
+    shakeStyle.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20%       { transform: translateX(-6px); }
+        40%       { transform: translateX(6px); }
+        60%       { transform: translateX(-4px); }
+        80%       { transform: translateX(4px); }
+      }
+    `;
+    document.head.appendChild(shakeStyle);
+
+    /* ================================================
+       13. SERVICE CARDS — hover micro-interaction
+       (add a subtle depth shadow on mouse position)
+    ================================================ */
+    document.querySelectorAll('.service-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width  - 0.5) * 8;
+        const y = ((e.clientY - rect.top)  / rect.height - 0.5) * 8;
+        card.style.transform = `perspective(600px) rotateX(${-y}deg) rotateY(${x}deg) translateZ(4px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+        card.style.transition = 'transform 0.4s ease, background 0.3s ease';
+      });
+    });
+
+    /* ================================================
+       14. REDUCED MOTION — respect prefers-reduced-motion
+    ================================================ */
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      document.querySelectorAll('.reveal, .stagger-children').forEach(el => {
+        el.classList.add('visible');
+      });
+      heroContent.classList.add('revealed');
+    }
+  </script>
+
+</body>
+</html>
